@@ -2,7 +2,7 @@ Gandi Computer Driver Documentation
 ===================================
 
 `Gandi SAS`_ is a registrar, web hosting and private and `public cloud`_
-provider based in France with data centers in France, Luxembourg and USA.
+provider based in France with data centers in France and Luxembourg.
 
 .. figure:: /_static/images/provider_logos/gandi.png
     :align: center
