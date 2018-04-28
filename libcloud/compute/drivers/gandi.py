@@ -118,8 +118,8 @@ class GandiNodeDriver(BaseGandiDriver, NodeDriver):
                 vm['state'],
                 NodeState.UNKNOWN
             ),
-            public_ips=vm.get('ips', []),
-            private_ips=[],
+            public_ips=vm.get('public_ips', []),
+            private_ips=vm.get('private_ips', []),
             driver=self,
             extra={
                 'ai_active': vm.get('ai_active'),
@@ -153,12 +153,14 @@ class GandiNodeDriver(BaseGandiDriver, NodeDriver):
         vms = self.connection.request('hosting.vm.list').object
         ips = self.connection.request('hosting.ip.list').object
         for vm in vms:
-            vm['ips'] = []
+            vm['public_ips'] = []
+            vm['private_ips'] = []
             for ip in ips:
-                if vm['ifaces_id'][0] == ip['iface_id']:
-                    ip = ip.get('ip', None)
-                    if ip:
-                        vm['ips'].append(ip)
+                if vm['id'] == ip['vm_id']:
+                    if ip['type'] == 'private':
+                        vm['private_ips'].append(ip['ip'])
+                    else:
+                        vm['public_ips'].append(ip['ip'])
 
         nodes = self._to_nodes(vms)
         return nodes
